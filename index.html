@@ -3,9 +3,213 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Circles</title>
+    <title>Circles — Join a Project</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap");
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          sans-serif;
+        background: radial-gradient(
+          circle at 30% 20%,
+          #6e63f5 0%,
+          #4238c4 55%,
+          #34288f 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .card {
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 40px 32px;
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.4);
+      }
+
+      .logo-mark {
+        position: relative;
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 20px;
+      }
+      .logo-mark span {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        mix-blend-mode: multiply;
+      }
+      .logo-mark .c1 {
+        background: #7a70f0;
+        top: 0;
+        left: 4px;
+      }
+      .logo-mark .c2 {
+        background: #ff8a73;
+        top: 0;
+        right: 4px;
+      }
+      .logo-mark .c3 {
+        background: #1fcbbb;
+        bottom: 0;
+        left: 16px;
+      }
+
+      h1 {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 24px;
+        color: #181a2e;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        color: #4b4d68;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 4px;
+      }
+
+      .project-name {
+        font-weight: 700;
+        color: #4238c4;
+      }
+
+      .divider {
+        height: 1px;
+        background: #e7e5f2;
+        margin: 24px 0;
+      }
+
+      .btn {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 14.5px;
+        text-decoration: none;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+      }
+
+      .btn-primary {
+        background: #5b4fe9;
+        color: #fff;
+        box-shadow: 0 10px 20px -8px rgba(91, 79, 233, 0.5);
+      }
+
+      .btn-secondary {
+        background: #f6f5fb;
+        color: #181a2e;
+        border: 1px solid #e7e5f2;
+      }
+
+      .note {
+        font-size: 11.5px;
+        color: #9490b0;
+        margin-top: 20px;
+        line-height: 1.5;
+      }
+
+      .footer {
+        margin-top: 28px;
+        font-size: 10.5px;
+        color: #c9c3ef;
+      }
+    </style>
   </head>
   <body>
-    <h3>Circles</h3>
+    <div class="card">
+      <div class="logo-mark">
+        <span class="c1"></span>
+        <span class="c2"></span>
+        <span class="c3"></span>
+      </div>
+
+      <h1>You've been invited</h1>
+      <p class="subtitle" id="project-line">
+        Join <span class="project-name" id="project-name">a project</span> on
+        Circles
+      </p>
+
+      <div class="divider"></div>
+
+      <!--
+      Already have the app installed?
+      Once Android App Links is fully verified (release keystore fingerprint
+      published at /.well-known/assetlinks.json), tapping this link on a
+      phone with Circles installed will open the app directly instead of
+      this page ever loading at all. Until then, this button is a manual
+      fallback that just tries to open the app via a custom URL scheme.
+    -->
+      <a href="#" id="open-app-btn" class="btn btn-primary">Open in Circles</a>
+
+      <!--
+      TODO: once published to Play Store, replace this href with the
+      real Play Store listing URL. For now, points to a direct APK link
+      you control (update the placeholder below).
+    -->
+      <a href="#" id="download-btn" class="btn btn-secondary"
+        >Don't have Circles? Get the app</a
+      >
+
+      <p class="note">
+        Circles is a lightweight project management app for freelancers and
+        small teams — tickets, chat, and reports in one place.
+      </p>
+
+      <div class="footer">Powered by Spread Apps</div>
+    </div>
+
+    <script>
+      // Reads ?project=NimbusApp&id=xxxx from the URL, e.g.:
+      // circles.spreadapps.in/join?project=Nimbus%20App&id=abc123
+      const params = new URLSearchParams(window.location.search);
+      const projectName = params.get("project");
+      const projectId = params.get("id");
+
+      if (projectName) {
+        document.getElementById("project-name").textContent = projectName;
+      }
+
+      // TODO: replace with your real Play Store URL once published
+      const PLAY_STORE_URL =
+        "https://play.google.com/store/apps/details?id=com.spreadapps.circles";
+      // TODO: temporary direct-APK link while pre-launch (e.g. a Google Drive share link)
+      const APK_FALLBACK_URL = "https://drive.google.com/YOUR_APK_LINK_HERE";
+
+      document.getElementById("download-btn").href = APK_FALLBACK_URL;
+      // Swap the line above for PLAY_STORE_URL once you're live on the Play Store.
+
+      // Attempt to open the installed app via custom URL scheme.
+      // This only works today if the app is already installed AND registered
+      // for this scheme in AndroidManifest.xml — otherwise it silently does nothing,
+      // which is fine, the user still has the download button as a fallback.
+      document
+        .getElementById("open-app-btn")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          const deepLink = projectId
+            ? `com.spreadapps.circles://join?id=${encodeURIComponent(projectId)}`
+            : "com.spreadapps.circles://open";
+          window.location.href = deepLink;
+        });
+    </script>
   </body>
 </html>
